@@ -1,0 +1,12 @@
+load("//rust:library.bzl", "rust_library")
+load("//tests:build_test.bzl", "build_test")
+
+rust_library(
+    name = "add",
+    crate_root = "lib.rs",
+)
+
+build_test(
+    name = "add_test",
+    targets = [":add"],
+)

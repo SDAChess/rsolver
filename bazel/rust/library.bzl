@@ -1,0 +1,28 @@
+_TOOLCHAIN = Label("//rust:toolchain_type")
+
+def _rust_library_impl(ctx):
+    toolchain = ctx.toolchains[_TOOLCHAIN]
+    rlib = ctx.actions.declare_file("lib{}.rlib".format(ctx.label.name))
+
+    args = ctx.actions.args()
+    args.add("--crate-name", ctx.label.name)
+    args.add("--crate-type", "rlib")
+    args.add("--emit", rlib, format = "link=%s")
+    args.add(ctx.file.crate_root)
+
+    ctx.actions.run(
+        executable = toolchain.rustc,
+        arguments = [args],
+        inputs = depset([ctx.file.crate_root], transitive = [toolchain.sysroot]),
+        outputs = [rlib],
+        mnemonic = "Rustc",
+    )
+    return [DefaultInfo(files = depset([rlib]))]
+
+rust_library = rule(
+    implementation = _rust_library_impl,
+    attrs = {
+        "crate_root": attr.label(allow_single_file = [".rs"], mandatory = True),
+    },
+    toolchains = [_TOOLCHAIN],
+)
