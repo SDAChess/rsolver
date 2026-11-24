@@ -49,6 +49,7 @@
               rustToolchain
               pkgs.bazel_9
             ];
+            RUSTC = "${rustToolchain}/bin/rustc";
           };
 
           treefmt.programs = {
