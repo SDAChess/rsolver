@@ -9,5 +9,6 @@ rust_library(
 
 build_test(
     name = "edition_2024_test",
+    size = "small",
     targets = [":edition_2024"],
 )

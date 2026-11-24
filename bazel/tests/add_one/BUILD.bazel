@@ -11,5 +11,6 @@ rust_library(
 
 build_test(
     name = "add_one_test",
+    size = "small",
     targets = [":add_one"],
 )

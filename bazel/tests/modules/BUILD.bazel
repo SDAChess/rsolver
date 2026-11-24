@@ -10,5 +10,6 @@ rust_library(
 
 build_test(
     name = "modules_test",
+    size = "small",
     targets = [":modules"],
 )
