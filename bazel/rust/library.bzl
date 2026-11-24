@@ -7,6 +7,7 @@ def _rust_library_impl(ctx):
     args = ctx.actions.args()
     args.add("--crate-name", ctx.label.name)
     args.add("--crate-type", "rlib")
+    args.add("--edition", ctx.attr.edition)
     args.add("--emit", rlib, format = "link=%s")
     args.add(ctx.file.crate_root)
 
@@ -23,6 +24,10 @@ rust_library = rule(
     implementation = _rust_library_impl,
     attrs = {
         "crate_root": attr.label(allow_single_file = [".rs"], mandatory = True),
+        "edition": attr.string(
+            mandatory = True,
+            values = ["2015", "2018", "2021", "2024"],
+        ),
     },
     toolchains = [_TOOLCHAIN],
 )

@@ -4,6 +4,7 @@ load("//tests:build_test.bzl", "build_test")
 rust_library(
     name = "add",
     crate_root = "lib.rs",
+    edition = "2024",
 )
 
 build_test(
