@@ -14,7 +14,10 @@ def _rust_library_impl(ctx):
     ctx.actions.run(
         executable = toolchain.rustc,
         arguments = [args],
-        inputs = depset([ctx.file.crate_root], transitive = [toolchain.sysroot]),
+        inputs = depset(
+            [ctx.file.crate_root] + ctx.files.srcs,
+            transitive = [toolchain.sysroot],
+        ),
         outputs = [rlib],
         mnemonic = "Rustc",
     )
@@ -28,6 +31,7 @@ rust_library = rule(
             mandatory = True,
             values = ["2015", "2018", "2021", "2024"],
         ),
+        "srcs": attr.label_list(allow_files = [".rs"]),
     },
     toolchains = [_TOOLCHAIN],
 )
