@@ -1,5 +1,5 @@
+load("//rust:binary.bzl", "rust_binary")
 load("//rust:library.bzl", "rust_library")
-load("//tests:build_test.bzl", "build_test")
 
 rust_library(
     name = "add_two",
@@ -8,8 +8,10 @@ rust_library(
     deps = ["//tests/add_one"],
 )
 
-build_test(
-    name = "add_two_test",
-    size = "small",
-    targets = [":add_two"],
+rust_binary(
+    name = "add_two_bin",
+    crate_root = "main.rs",
+    edition = "2024",
+    visibility = ["//tests:__pkg__"],
+    deps = [":add_two"],
 )

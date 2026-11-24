@@ -1,5 +1,5 @@
+load("//rust:binary.bzl", "rust_binary")
 load("//rust:library.bzl", "rust_library")
-load("//tests:build_test.bzl", "build_test")
 
 # Two different crates named `util` meet in `top`.
 rust_library(
@@ -26,8 +26,10 @@ rust_library(
     ],
 )
 
-build_test(
-    name = "diamond_test",
-    size = "small",
-    targets = [":top"],
+rust_binary(
+    name = "diamond_bin",
+    crate_root = "main.rs",
+    edition = "2024",
+    visibility = ["//tests:__pkg__"],
+    deps = [":top"],
 )
