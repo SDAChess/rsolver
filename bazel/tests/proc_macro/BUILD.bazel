@@ -1,0 +1,32 @@
+load("//rust:binary.bzl", "rust_binary")
+load("//rust:library.bzl", "rust_library")
+load("//rust:proc_macro.bzl", "rust_proc_macro")
+
+# Only `make_answer` uses it, at expansion time; it must not reach the crates above.
+rust_library(
+    name = "answer",
+    crate_root = "answer.rs",
+    edition = "2024",
+)
+
+rust_proc_macro(
+    name = "make_answer",
+    crate_root = "make_answer.rs",
+    edition = "2024",
+    deps = [":answer"],
+)
+
+rust_library(
+    name = "uses_macro",
+    crate_root = "uses_macro.rs",
+    edition = "2024",
+    proc_macro_deps = [":make_answer"],
+)
+
+rust_binary(
+    name = "proc_macro_bin",
+    crate_root = "main.rs",
+    edition = "2024",
+    visibility = ["//tests:__pkg__"],
+    deps = [":uses_macro"],
+)

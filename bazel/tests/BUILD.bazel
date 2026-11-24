@@ -10,5 +10,6 @@ run_tests(
         "//tests/diamond:diamond_bin",
         "//tests/edition_2024:edition_2024_bin",
         "//tests/modules:modules_bin",
+        "//tests/proc_macro:proc_macro_bin",
     ],
 )
