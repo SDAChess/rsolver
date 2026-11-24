@@ -45,7 +45,10 @@
           };
 
           devShells.default = pkgs.mkShell {
-            packages = [ rustToolchain ];
+            packages = [
+              rustToolchain
+              pkgs.bazel_9
+            ];
           };
 
           treefmt.programs = {
