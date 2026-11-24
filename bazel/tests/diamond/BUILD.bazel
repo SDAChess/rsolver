@@ -1,0 +1,33 @@
+load("//rust:library.bzl", "rust_library")
+load("//tests:build_test.bzl", "build_test")
+
+# Two different crates named `util` meet in `top`.
+rust_library(
+    name = "left",
+    crate_root = "left.rs",
+    edition = "2024",
+    deps = ["//tests/diamond/a:util"],
+)
+
+rust_library(
+    name = "right",
+    crate_root = "right.rs",
+    edition = "2024",
+    deps = ["//tests/diamond/b:util"],
+)
+
+rust_library(
+    name = "top",
+    crate_root = "top.rs",
+    edition = "2024",
+    deps = [
+        ":left",
+        ":right",
+    ],
+)
+
+build_test(
+    name = "diamond_test",
+    size = "small",
+    targets = [":top"],
+)

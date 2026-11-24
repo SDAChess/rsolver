@@ -16,6 +16,9 @@ def _rust_library_impl(ctx):
     args.add("--crate-name", crate_name)
     args.add("--crate-type", "rlib")
     args.add("--edition", ctx.attr.edition)
+
+    # Crates with the same name (two versions, or two packages) need distinct identities.
+    args.add("-C", "metadata=" + str(ctx.label))
     args.add("--emit", rlib, format = "link=%s")
     for dep in deps:
         args.add("--extern", dep.rlib, format = dep.crate_name + "=%s")
