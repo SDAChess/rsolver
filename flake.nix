@@ -59,7 +59,13 @@
             };
             nixfmt.enable = true;
             taplo.enable = true;
+            buildifier.enable = true;
           };
+
+          treefmt.settings.formatter.buildifier.options = [
+            "--lint=warn"
+            "--warnings=-module-docstring"
+          ];
         };
     };
 }
