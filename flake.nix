@@ -55,14 +55,7 @@
             default = procxy;
           };
 
-          devShells.default = pkgs.mkShell {
-            packages = [
-              rustToolchain
-              pkgs.bazel_9
-            ];
-            RUSTC = "${rustToolchain}/bin/rustc";
-            RUST_LINKER = "${pkgs.stdenv.cc}/bin/cc";
-          };
+          devShells.default = pkgs.callPackage ./nix/shell.nix { inherit procxy rustToolchain; };
 
           treefmt.programs = {
             rustfmt = {
