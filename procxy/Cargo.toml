@@ -6,7 +6,9 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
+serde.workspace = true
 thiserror.workspace = true
+toml.workspace = true
 
 [lints.rust]
 missing_docs = "warn"

@@ -6,6 +6,7 @@
 
 pub mod crate_version;
 pub mod error;
+pub mod manifest;
 
 pub use crate_version::CrateVersion;
 pub use error::Error;
