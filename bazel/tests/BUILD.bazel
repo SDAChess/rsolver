@@ -1,0 +1,14 @@
+load("//tests:run_test.bzl", "run_tests")
+
+run_tests(
+    name = "binaries",
+    size = "small",
+    binaries = [
+        "//tests/add:add_bin",
+        "//tests/add_one:add_one_bin",
+        "//tests/add_two:add_two_bin",
+        "//tests/diamond:diamond_bin",
+        "//tests/edition_2024:edition_2024_bin",
+        "//tests/modules:modules_bin",
+    ],
+)

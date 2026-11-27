@@ -1,46 +1,10 @@
 load("//rust:providers.bzl", "RustCrateInfo")
-
-_TOOLCHAIN = Label("//rust:toolchain_type")
-
-def _dirname(file):
-    return file.dirname
+load("//rust:rustc.bzl", "TOOLCHAIN", "rustc_compile")
 
 def _rust_library_impl(ctx):
-    toolchain = ctx.toolchains[_TOOLCHAIN]
     crate_name = ctx.label.name
     rlib = ctx.actions.declare_file("lib{}.rlib".format(crate_name))
-    deps = [dep[RustCrateInfo] for dep in ctx.attr.deps]
-    dep_rlibs = depset(transitive = [dep.transitive_rlibs for dep in deps])
-
-    args = ctx.actions.args()
-    args.add("--crate-name", crate_name)
-    args.add("--crate-type", "rlib")
-    args.add("--edition", ctx.attr.edition)
-
-    # Crates with the same name (two versions, or two packages) need distinct identities.
-    args.add("-C", "metadata=" + str(ctx.label))
-    args.add("--emit", rlib, format = "link=%s")
-    for dep in deps:
-        args.add("--extern", dep.rlib, format = dep.crate_name + "=%s")
-    args.add_all(
-        dep_rlibs,
-        map_each = _dirname,
-        uniquify = True,
-        before_each = "-L",
-        format_each = "dependency=%s",
-    )
-    args.add(ctx.file.crate_root)
-
-    ctx.actions.run(
-        executable = toolchain.rustc,
-        arguments = [args],
-        inputs = depset(
-            [ctx.file.crate_root] + ctx.files.srcs,
-            transitive = [toolchain.sysroot, dep_rlibs],
-        ),
-        outputs = [rlib],
-        mnemonic = "Rustc",
-    )
+    dep_rlibs = rustc_compile(ctx, "rlib", rlib)
     return [
         DefaultInfo(files = depset([rlib])),
         RustCrateInfo(
@@ -61,5 +25,5 @@ rust_library = rule(
         ),
         "srcs": attr.label_list(allow_files = [".rs"]),
     },
-    toolchains = [_TOOLCHAIN],
+    toolchains = [TOOLCHAIN],
 )

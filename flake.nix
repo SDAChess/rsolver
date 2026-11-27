@@ -50,6 +50,7 @@
               pkgs.bazel_9
             ];
             RUSTC = "${rustToolchain}/bin/rustc";
+            RUST_LINKER = "${pkgs.stdenv.cc}/bin/cc";
           };
 
           treefmt.programs = {

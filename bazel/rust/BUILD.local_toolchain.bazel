@@ -2,6 +2,7 @@ load("@rules_oxide//rust:toolchain.bzl", "rust_toolchain")
 
 rust_toolchain(
     name = "rust_toolchain",
+    linker = "linker",
     rustc = "sysroot/bin/rustc",
     sysroot = glob(
         ["sysroot/lib/**"],
