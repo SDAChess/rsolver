@@ -1,0 +1,7 @@
+module(name = "rules_oxide")
+
+local_rust_toolchain = use_repo_rule("//rust:local_toolchain.bzl", "local_rust_toolchain")
+
+local_rust_toolchain(name = "local_rust")
+
+register_toolchains("@local_rust//:toolchain")

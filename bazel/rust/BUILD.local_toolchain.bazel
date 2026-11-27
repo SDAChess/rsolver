@@ -1,0 +1,16 @@
+load("@rules_oxide//rust:toolchain.bzl", "rust_toolchain")
+
+rust_toolchain(
+    name = "rust_toolchain",
+    rustc = "sysroot/bin/rustc",
+    sysroot = glob(
+        ["sysroot/lib/**"],
+        exclude = ["sysroot/lib/rustlib/src/**"],
+    ),
+)
+
+toolchain(
+    name = "toolchain",
+    toolchain = ":rust_toolchain",
+    toolchain_type = "@rules_oxide//rust:toolchain_type",
+)
