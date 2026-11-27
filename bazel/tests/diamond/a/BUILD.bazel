@@ -1,0 +1,8 @@
+load("//rust:library.bzl", "rust_library")
+
+rust_library(
+    name = "util",
+    crate_root = "lib.rs",
+    edition = "2024",
+    visibility = ["//tests:__subpackages__"],
+)

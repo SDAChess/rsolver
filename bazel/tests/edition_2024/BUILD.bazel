@@ -1,0 +1,14 @@
+load("//rust:library.bzl", "rust_library")
+load("//tests:build_test.bzl", "build_test")
+
+rust_library(
+    name = "edition_2024",
+    crate_root = "lib.rs",
+    edition = "2024",
+)
+
+build_test(
+    name = "edition_2024_test",
+    size = "small",
+    targets = [":edition_2024"],
+)
