@@ -37,6 +37,12 @@
               "rust-analyzer"
             ];
           };
+          procxy = pkgs.callPackage ./nix/package.nix {
+            rustPlatform = pkgs.makeRustPlatform {
+              cargo = rustToolchain;
+              rustc = rustToolchain;
+            };
+          };
         in
         {
           _module.args.pkgs = import inputs.nixpkgs {
@@ -44,14 +50,12 @@
             overlays = [ inputs.rust-overlay.overlays.default ];
           };
 
-          devShells.default = pkgs.mkShell {
-            packages = [
-              rustToolchain
-              pkgs.bazel_9
-            ];
-            RUSTC = "${rustToolchain}/bin/rustc";
-            RUST_LINKER = "${pkgs.stdenv.cc}/bin/cc";
+          packages = {
+            inherit procxy;
+            default = procxy;
           };
+
+          devShells.default = pkgs.callPackage ./nix/shell.nix { inherit procxy rustToolchain; };
 
           treefmt.programs = {
             rustfmt = {
